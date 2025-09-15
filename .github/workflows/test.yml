@@ -11,20 +11,18 @@ jobs:
         - name: Set up Python
           run: |
             docker compose up -d --build
+            docker wait test client
             log_test=$(docker logs test client)
             if [[ "$log_test" == *"1"* ]]; then
               echo "error"
               docker compose down -v
-                exit 1
+              exit 1
             elif [[ "$log_test" == *"0"* ]]; then
               echo "success"
               docker compose down -v
-                exit 1
+              exit 0
             else 
               echo "error no no none"
               docker compose down -v
-                exit 1
-            fi    
-
-
-           
+              exit 1
+            fi
