@@ -11,8 +11,8 @@ jobs:
         - name: Set up Python
           run: |
             docker compose up -d --build
-            docker wait test client
-            log_test=$(docker logs test client)
+            docker wait test_client
+            log_test=$(docker logs test_client)
             if [[ "$log_test" == *"1"* ]]; then
               echo "error"
               docker compose down -v
