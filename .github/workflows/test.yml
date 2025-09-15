@@ -1,0 +1,30 @@
+name: test and deploy
+on:
+  push:
+    branches:
+      - main
+jobs:
+    test:
+        runs-on: ubuntu-latest
+        steps:
+        - uses: actions/checkout@v3
+        - name: Set up Python
+          run: |
+            docker compose up -d --build
+            log_test=$(docker logs test client)
+            if [[ "$log_test" == *"1"* ]]; then
+              echo "error"
+              docker compose down -v
+                exit 1
+            elif [[ "$log_test" == *"0"* ]]; then
+              echo "success"
+              docker compose down -v
+                exit 1
+            else 
+              echo "error no no none"
+              docker compose down -v
+                exit 1
+            fi    
+
+
+           
